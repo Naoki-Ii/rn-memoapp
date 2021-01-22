@@ -1,6 +1,5 @@
-import { func } from 'prop-types';
 import React from 'react';
-import {View, Text, StyleSheet, TextInput, Button} from 'react-native';
+import {View, Text, StyleSheet, TextInput, Button, TouchableOpacity} from 'react-native';
 import AppBar from '../components/AppBar';
 import ButtonSubmit from '../components/ButtonSubmit';
 
@@ -15,7 +14,9 @@ export default function LogInScreen(){
                 <ButtonSubmit label='Submit'/>
                 <View style={styles.footer}>
                     <Text style={styles.footerText}>Not registers?</Text>
-                    <Text style={styles.footerLink}>Sign Up Here!</Text>
+                    <TouchableOpacity>
+                        <Text style={styles.footerLink}>Sign Up Here!</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
 
