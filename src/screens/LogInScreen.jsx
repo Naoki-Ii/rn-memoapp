@@ -3,18 +3,32 @@ import {View, Text, StyleSheet, TextInput, Button, TouchableOpacity} from 'react
 import AppBar from '../components/AppBar';
 import ButtonSubmit from '../components/ButtonSubmit';
 
-export default function LogInScreen(){
+export default function LogInScreen(props){
+    const {navigation} = props;
     return(
         <View style={styles.container}>
-            <AppBar/>
             <View style={styles.inner}>
                 <Text style={styles.title}>Log In</Text>
                 <TextInput style={styles.input} value="Email Address"/>
                 <TextInput style={styles.input} value="Password"/>
-                <ButtonSubmit label='Submit'/>
+                <ButtonSubmit 
+                label='Submit'
+                onPress={() => {
+                    navigation.reset({
+                    index:0,
+                    routes:[{name : 'Memo List'}],
+                    }); 
+                }}
+                />
                 <View style={styles.footer}>
                     <Text style={styles.footerText}>Not registers?</Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {navigation.reset({
+                            index:0,
+                            routes: [{name:'Sign Up'}],
+                        });
+                    }}
+                    >
                         <Text style={styles.footerLink}>Sign Up Here!</Text>
                     </TouchableOpacity>
                 </View>

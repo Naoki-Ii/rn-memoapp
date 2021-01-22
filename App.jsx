@@ -5,10 +5,49 @@ import MemoDetailScreen from './src/screens/MemoDetaillScreen';
 import MemoEditScreen from './src/screens/MemoEditScreen';
 import MemoListScreen from './src/screens/MemoListScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
+
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <SignUpScreen></SignUpScreen>
+
+    <NavigationContainer>
+      <Stack.Navigator 
+      initialRouteName="Sign Up"
+      screenOptions={{
+        headerStyle: {backgroundColor:'#6699FF'},
+        headerTitleStyle: {color:'#ffffff'},
+        headerTitle: 'Memo App',
+        headerTintColor: '#ffffff',
+        headerBackTitle: 'Back',
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        gestureEnabled:true,
+        gestureDirection: 'horizontal',
+      }}
+      >
+        <Stack.Screen 
+        name="Log In" 
+        component={LogInScreen}
+        options={{
+          cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
+        }}
+        />
+        <Stack.Screen 
+        name="Sign Up" 
+        component={SignUpScreen}
+        options={{
+          cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
+        }}
+        />
+        <Stack.Screen name="Memo List" component={MemoListScreen}/>
+        <Stack.Screen name="Memo Edit" component={MemoEditScreen}/>
+        <Stack.Screen name="Memo Create" component={MemoCreateScreen}/>
+        <Stack.Screen name="Memo Detail" component={MemoDetailScreen}/>
+      </Stack.Navigator>
+
+    </NavigationContainer>
     
   );
 }
