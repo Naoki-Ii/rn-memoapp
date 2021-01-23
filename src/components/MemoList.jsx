@@ -3,6 +3,7 @@ import { Alert, StyleSheet, Text, TouchableOpacity, View, FlatList } from 'react
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import {shape, string, instanceOf, arrayOf} from 'prop-types';
+import { dateToString } from '../utils';
 
 export default function MemoList(props) {
   const {memos} = props;
@@ -11,11 +12,11 @@ export default function MemoList(props) {
     return(
       <TouchableOpacity
           style={styles.memoListItem}
-          onPress={() => { navigation.navigate('Memo Detail')}}
+          onPress={() => { navigation.navigate('Memo Detail'), {id:item.id};}}
           >
             <View>
               <Text style={styles.memoListItemTitle} numberOfLines={1}>{item.bodyText}</Text>
-              <Text style={styles.memoListItemTime}>{String(item.time)}</Text>
+              <Text style={styles.memoListItemTime}>{dateToString(item.time)}</Text>
             </View>
             <TouchableOpacity 
               onPress={() => {Alert.alert('Are you Sure?')}}

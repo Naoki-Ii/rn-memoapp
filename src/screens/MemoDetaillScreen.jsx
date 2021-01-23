@@ -1,16 +1,43 @@
-import React from 'react';
+import { shape, string } from 'prop-types';
+import React , {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import firebase from 'firebase';
 
 import AppBar from '../components/AppBar';
 import CircleButton from '../components/CircleButton';
+import { useState } from 'react/cjs/react.development';
+import { dateToString } from '../utils';
 
 export default function MemoDetailScreen(props){
-    const {navigation} = props;
+    const {navigation, route} = props;
+    const { id } = route.params;
+    console.log(id);
+    const [memo,setMemo] = useState(null);
+
+    useEffect(() => {
+        const {currentUser} = firebase.auth();
+        let unsubscribe = () => {};
+        if (currentUser) {
+            const db = firebase.firestore();
+        const ref = db.collection(`users/${currentUser.uid}/memos`).doc(id);
+        unsubscribe = ref.onSnapshot((doc) => {
+            console.log(doc.id, doc.data());
+            const data = doc.data();
+            setMemo({
+                id: doc.id,
+                bodyText:data.bodyText,
+                time: data.time.toDate(),
+            });
+        });
+        }
+        return unsubscribe;
+    }, []);
+
     return(
         <View style={styles.container}>
             <View style={styles.memoheader}>
-                <Text style={styles.memotitle}>買い物リスト</Text>
-                <Text style={styles.memodate}>2020/12/24 00:00:00</Text>
+                <Text style={styles.memotitle} numberOfLines={1}>{memo && memo.bodyText}</Text>
+                <Text style={styles.memodate}>{memo && dateToString(memo.time)}</Text>
             </View>
             <ScrollView style={styles.memobody}>
                 <View style={styles.memotext}>
@@ -27,6 +54,12 @@ export default function MemoDetailScreen(props){
         </View>
     );
 }
+
+MemoDetailScreen.propTypes ={
+    route: shape({
+        params: shape({id: string}),
+    }).isRequired,
+};
 
 const styles = StyleSheet.create({
     container:{
