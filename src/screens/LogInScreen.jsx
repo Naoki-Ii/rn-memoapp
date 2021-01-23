@@ -1,12 +1,41 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, TextInput, Button, TouchableOpacity} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Text, StyleSheet, TextInput, Button, TouchableOpacity, Alert} from 'react-native';
 import AppBar from '../components/AppBar';
 import ButtonSubmit from '../components/ButtonSubmit';
+import firebase from 'firebase';
 
 export default function LogInScreen(props){
     const {navigation} = props;
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    
+    useEffect(() => {
+        const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                navigation.reset({
+                    index:0,
+                    routes:[{name : 'Memo List'}],
+                });
+            }
+        });
+        return unsubscribe;
+    }, []);
+
+    function handPress() {
+        firebase.auth().signInWithEmailAndPassword(email,password)
+            .then((userCredencial) => {
+                const {user} = userCredencial;
+                console.log(user.uid);
+                navigation.reset({
+                    index:0,
+                    routes:[{name : 'Memo List'}],
+                });
+        })
+        .catch((error) => {
+            Alert.alert(error.code);
+        });
+            
+    }
     return(
         <View style={styles.container}>
             <View style={styles.inner}>
@@ -29,12 +58,7 @@ export default function LogInScreen(props){
                 />
                 <ButtonSubmit 
                 label='Submit'
-                onPress={() => {
-                    navigation.reset({
-                    index:0,
-                    routes:[{name : 'Memo List'}],
-                    }); 
-                }}
+                onPress={handPress}
                 />
                 <View style={styles.footer}>
                     <Text style={styles.footerText}>Not registers?</Text>
