@@ -10,6 +10,8 @@ import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/
 import firebase from 'firebase';
 import {firebaseConfig} from './env';
 
+require('firebase/firestore');
+
 const Stack = createStackNavigator();
 
 if (firebase.apps.length === 0) {
