@@ -5,7 +5,6 @@ import firebase from 'firebase';
 
 import AppBar from '../components/AppBar';
 import CircleButton from '../components/CircleButton';
-import { useState } from 'react/cjs/react.development';
 import { dateToString } from '../utils';
 
 export default function MemoDetailScreen(props){
@@ -41,15 +40,13 @@ export default function MemoDetailScreen(props){
             </View>
             <ScrollView style={styles.memobody}>
                 <View style={styles.memotext}>
-                    <Text>
-                    こちらに本文が入ります
-                    </Text>
+                    <Text>{memo && memo.bodyText}</Text>
                 </View>
             </ScrollView>
             <CircleButton 
             style={{top:60, bottom: 'auto'}} 
             name="edit-2" 
-            onPress={() => {navigation.navigate('Memo Edit'); }}
+            onPress={() => {navigation.navigate('Memo Edit', {id: memo.id, bodyText:memo.bodyText})}}
             />
         </View>
     );
